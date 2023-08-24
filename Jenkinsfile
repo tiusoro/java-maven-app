@@ -33,7 +33,7 @@ pipeline {
                 script {
                     def dockerCmd = 'docker run -p 8090:3080 -d tiusoro/java-maven-app:jma-1.0'
                     sshagent(['ec2-instance-key']) {
-                                // some block
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@35.175.139.7 ${dockerCmd}"
                     }
                 }
             }               
