@@ -2,41 +2,38 @@
 
 pipeline {
     agent any
-    tools {
-        maven 'Maven'
-    }
     stages {
-        stage('increment version') {
+        stage("init") {
             steps {
                 script {
-                    echo 'incrementing app version...'
+                    gv = load "script.groovy"
                 }
             }
         }
-        stage('build app') {
+        stage("build jar") {
             steps {
                 script {
-                echo 'building application jar...'
+                    gv.buildJar()
                 }
             }
         }
-        stage('build image') {
+        stage("build image") {
             steps {
                 script {
-                    echo 'building the docker image...'
-                
+                    gv.buildImage()
                 }
             }
-        } 
+        }
+        
         stage("deploy") {
             steps {
                 script {
-                    def dockerCmd = 'docker run -p 8090:3080 -d tiusoro/java-maven-app:jma-1.0'
-                    sshagent(['ec2-instance-key']) {
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@35.175.139.7 ${dockerCmd}"
-                    }
+                    gv.deployApp()
                 }
-            }               
+            
+            }
+            
         }
+        
     }
 }
