@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven'
+        jdk 'openjdk'        
+    }
     stages {
         stage("init") {
             steps {
