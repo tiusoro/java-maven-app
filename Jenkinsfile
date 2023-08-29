@@ -5,6 +5,7 @@ pipeline {
             steps {
                 script {
                     echo 'building the application...' 
+                    sh 'mvn clean package' 
                 }
             }
         }
