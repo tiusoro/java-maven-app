@@ -1,3 +1,5 @@
+def gv
+
 pipeline {
     agent any
     tools {
@@ -5,23 +7,25 @@ pipeline {
         jdk 'openjdk'        
     }
     stages {
-        stage('build jar') {
+        stage('init') {
             steps {
                 script {
-                    echo 'building the application...' 
-                    sh 'mvn clean package' 
+                    gv = load 'script.groovy'
                 }
             }
         }
-        stage('build image') {
+
+        stage('Build Jar') {
             steps {
                 script {
-                    echo "building the docker image..."
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable:'PASS', usernameVariable: 'USER')]) {
-                        sh 'docker build -t tiusoro/java-maven-jenkins:jma-1.3 .'
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh 'docker push tiusoro/java-maven-jenkins:jma-1.3'
-                    }
+                    gv.buildJar()
+                }
+            }
+        }
+        stage('Build Image') {
+            steps {
+                script {
+                    gv.buildImage()
                 }
             }
         }
@@ -29,7 +33,7 @@ pipeline {
         stage('deploy') {
             steps {
                 script {
-                    echo 'deploying the application...'
+                    gv.deployApp()
                 }
             
             }
