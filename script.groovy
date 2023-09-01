@@ -16,10 +16,7 @@ def buildImage() {
 
 def deployApp() {
     echo 'deploying the application...'
-    def dockerCmd = ‘docker run -p 8080:8080 -d tiusoro/java-maven-jenkins:jma-1.6’
-    sshagent([‘ec2-jenkins-user’]) {
-	    sh “ssh -o StrickHostKeyChecking=no ec2-user@54.242.111.137 ${dockerCmd}”
-    }
+    
 }
 
 
