@@ -7,9 +7,9 @@ def buildJar() {
 def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable:'PASS', usernameVariable: 'USER')]) {
-        sh 'docker build -t tiusoro/java-maven-jenkins:jma-1.8 .'
+        sh 'docker build -t tiusoro/java-maven-jenkins:jma-1.9 .'
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh 'docker push tiusoro/java-maven-jenkins:jma-1.8'
+        sh 'docker push tiusoro/java-maven-jenkins:jma-1.9'
     } 
 }
     
@@ -17,7 +17,7 @@ def buildImage() {
 def deployApp() {
     echo 'deploying the application...'
     sshagent([‘ec2-jenkins-user’]) {
-	sh 'ssh -o StrictHostKeyChecking=no ec2-user@54.242.111.137 ${docker run -p 8080:8080 -d tiusoro/java-maven-jenkins:jma-1.8}'
+	sh 'ssh -o StrictHostKeyChecking=no ec2-user@54.242.111.137 ${docker run -p 8080:8080 -d tiusoro/java-maven-jenkins:jma-1.9}'
     }
 }
 
