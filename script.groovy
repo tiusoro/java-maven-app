@@ -16,7 +16,7 @@ def buildImage() {
 
 def deployApp() {
     echo 'deploying the application...'
-    sshagent([‘ec2-jenkins-user’]) {
+    sshagent([‘ec2-instance-key’]) {
 	sh '''
 	    ssh -o StrictHostKeyChecking=no ec2-user@54.242.111.137 
 	    "${docker run -p 8080:8080 -d tiusoro/java-maven-jenkins:jma-2.0}"
