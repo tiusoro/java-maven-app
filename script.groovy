@@ -1,4 +1,4 @@
-8def buildJar() {
+def buildJar() {
     echo 'building the application...' 
     sh 'mvn clean package'   
 
@@ -16,7 +16,7 @@ def buildImage() {
 
 def deployApp() {
     echo 'deploying the application...'
-    sshagent([‘ec2-server-key’]) {
+    sshagent([‘ec2-jenkins-user’]) {
 	sh 'ssh -o StrictHostKeyChecking=no ec2-user@35.180.251.121 ${docker run -p 8080:8080 -d tiusoro/java-maven-jenkins:jma-1.8}'
     }
 }
